@@ -28,16 +28,39 @@ Timing, data licensing, and implementation details for market data are still ope
 
 ## Getting started
 
-Install dependencies and run the dev server:
+`@lancebailey26/skyforge-ui` is installed from **GitHub Packages**. Your machine (and any host that runs `npm install`) must authenticate to `npm.pkg.github.com`.
+
+**Local install**
+
+1. Create a [GitHub personal access token](https://github.com/settings/tokens) with the **`read:packages`** scope (classic PAT), or a fine-grained token that can read packages for the `lancebailey26` account that publishes the library.
+2. Either export it for the shell session, or add it to your user-level `~/.npmrc` (not committed):
+
+   ```bash
+   export NPM_TOKEN=ghp_your_token_here
+   npm install
+   ```
+
+   The repo `.npmrc` wires the `@lancebailey26` scope to GitHub Packages and uses `${NPM_TOKEN}` for the registry token. If `NPM_TOKEN` is unset, `npm` may fall back to credentials in your user `~/.npmrc` depending on version and merge behavior—when in doubt, export `NPM_TOKEN` before installing.
+
+Then run the dev server:
 
 ```bash
-npm install
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
 You will need a MongoDB connection configured for this app (for example via `.env.local`). Use whatever connection string and variable names your deployment expects; keep secrets out of git.
+
+### Deploying on Vercel
+
+Vercel’s build runs `npm install` in a clean environment, so it has **no** GitHub Packages token unless you add one.
+
+1. In the Vercel project: **Settings → Environment Variables**.
+2. Add **`NPM_TOKEN`** (same value as a PAT with **`read:packages`**), enabled for **Production** and **Preview** (and Development if you use Vercel’s cloud dev).
+3. Redeploy.
+
+Without `NPM_TOKEN`, installs fail with **`401 Unauthorized`** on `npm.pkg.github.com`.
 
 ```bash
 npm run build   # production build
