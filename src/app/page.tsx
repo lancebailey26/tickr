@@ -1,65 +1,73 @@
-import Image from "next/image";
+"use client";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-
+import type { Brand, Watch } from "@/lib/types";
+import Search from "./components/search/search";
+import { WatchCatalog } from "./components/watchCatalog/watchCatalog";
 export default function Home() {
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState<string>("");
+  const [selectedWatch, setSelectedWatch] = useState<string>("");
+  const [fetchedWatches, setFetchedWatches] = useState<Watch[]>([]);
+  const brandKey = selectedBrand.trim();
+  const watches = brandKey ? fetchedWatches : [];
+  useEffect(() => {
+    fetch("/api/brands")
+      .then((res) => {
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json() as Promise<Brand[]>;
+      })
+      .then(setBrands)
+      .catch(console.error);
+  }, []);
+  useEffect(() => {
+    if (!brandKey) return;
+    fetch(`/api/watches?brand=${encodeURIComponent(brandKey)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json() as Promise<Watch[]>;
+      })
+      .then((data) => {
+        console.log(data);
+        setFetchedWatches(data);
+      })
+      .catch(console.error);
+  }, [brandKey]);
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className={`${styles.page} tickr-page`}>
+      <main className={`${styles.main} tickr-main`}>
+        <header className="tickr-hero">
+          <p className="tickr-eyebrow">Reference catalog</p>
+          <h1 className="tickr-hero-title">Tickr</h1>
+          <p className="tickr-hero-lead">
+            Browse brands and models in one place—filter by brand, then zero in on a
+            specific watch.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+          <div className="tickr-search-wrap">
+            <p className={styles.searchKicker}>Explore</p>
+            <div className={styles.searchStage}>
+              <Search
+                brands={brands}
+                selectedBrand={selectedBrand}
+                setSelectedBrand={setSelectedBrand}
+                selectedWatch={selectedWatch}
+                setSelectedWatch={setSelectedWatch}
+                watches={watches}
+              />
+            </div>
+          </div>
+        </header>
+        {selectedBrand && (
+        <section className="tickr-catalog-section" aria-labelledby="catalog-heading">
+          <div className={styles.catalogHeader}>
+            <p className={styles.catalogEyebrow}>{selectedBrand}</p>
+            <h2 id="catalog-heading" className={styles.catalogTitle}>
+              Current Catalog
+            </h2>
+          </div>
+          <WatchCatalog watches={watches} selectedWatch={selectedWatch} />
+        </section>
+        )}
       </main>
     </div>
   );

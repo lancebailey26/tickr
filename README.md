@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tickr
 
-## Getting Started
+Tickr is a **watch reference catalog**: browse brands, pick a model, and see what is in the database today. The app is a **work in progress**—the current UI and data model are intentionally small so the project can grow without painting us into a corner.
 
-First, run the development server:
+## Status: work in progress
+
+What you see now is an early slice: a searchable catalog backed by MongoDB, with room to grow into a fuller research tool. Nothing here should be read as “feature complete.”
+
+## Where this is headed
+
+The long-term idea is a single place to explore watches with **depth**, not just names on a card. Planned directions include:
+
+- **More brands** and broader coverage as data and sourcing improve.
+- **More variations per model**—dial, case metal, bracelet, limited editions, regional differences, and other variants that matter to collectors.
+- **Specifications**—dimensions, movement, water resistance, crystal, power reserve, and other structured fields so comparisons are possible.
+- **Pricing context**
+  - **MSRP** (or list price) where it is known and attributable.
+  - **Secondary market signals**—aggregated or linked pricing from marketplaces such as **eBay** and similar sources, with clear caveats (condition, authenticity, fees, and time all affect “the price”).
+
+Timing, data licensing, and implementation details for market data are still open; this README is the north star, not a commitment schedule.
+
+## What works today
+
+- Next.js (App Router) + TypeScript
+- MongoDB for brands and watches
+- REST-style routes: `GET /api/brands`, `GET /api/watches?brand=…`
+- Client catalog: brand and model search, glass-style cards, optional images
+
+## Getting started
+
+Install dependencies and run the dev server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You will need a MongoDB connection configured for this app (for example via `.env.local`). Use whatever connection string and variable names your deployment expects; keep secrets out of git.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run start   # run production server
+npm run lint    # ESLint
+```
 
-## Learn More
+## Stack (high level)
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework:** Next.js, React
+- **UI:** Skyforge UI (`@lancebailey26/skyforge-ui`)
+- **Data:** MongoDB (`mongodb` driver)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tickr is evolving.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Made with love by @lancebailey26 

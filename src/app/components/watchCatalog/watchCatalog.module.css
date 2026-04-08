@@ -1,0 +1,34 @@
+.centerpiece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1.5rem;
+  padding-block: 0.35rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  width: 100%;
+}
+
+.empty {
+  margin: 0;
+  padding: clamp(2rem, 5vh, 2.75rem) clamp(1.25rem, 3vw, 1.75rem);
+  text-align: center;
+  font-size: clamp(1rem, 1.5vw, 1.08rem);
+  line-height: 1.6;
+  color: color-mix(in oklch, var(--color-on-surface-alt) 92%, transparent);
+  border-radius: 1rem;
+  border: 1px dashed color-mix(in oklch, var(--color-on-surface-alt) 28%, transparent);
+  background: color-mix(in oklch, var(--color-on-surface) 5%, transparent);
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.catalogRoot {
+  width: 100%;
+}

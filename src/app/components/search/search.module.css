@@ -1,0 +1,40 @@
+/* Flex + gap is what makes a drag-select span both fields and draw marching ants around
+   this row — not the module class name itself. Keep selection off the row; inputs below. */
+.search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(0.85rem, 2vw, 1.15rem);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.search :global(input) {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Dropdown / trigger use width: 100%; constrain that to this flex slot */
+.field {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.fieldRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.dropdownSlot {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Align skyforge Button with dropdown row; component supplies visuals */
+.clearBtn {
+  flex: 0 0 auto;
+  margin-top: 0.125rem;
+}
